@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Pallets Registrados</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+
+<body class="bg-light">
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">📦 Pallets Registrados</h2>
+
+    <table class="table table-bordered table-hover align-middle shadow-sm">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>ID</th>
+          <th>Productor</th>
+          <th>Variedad</th>
+          <th>Enfriado</th>
+          <th>Fumigado</th>
+          <th>Preprocesos</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for p in pallets %}
+        <tr class="text-center {% if p.bloqueado_recepcion %}table-secondary{% endif %}">
+          <td>{{ p.id }}</td>
+          <td>{{ p.productor }}</td>
+          <td>{{ p.variedad }}</td>
+
+          <!-- Enfriado -->
+          <td>
+            <a href="{% url 'actualizar_estado' p.id %}?accion=enfriado"
+               class="btn btn-sm {% if p.enfriado %}btn-success{% else %}btn-outline-secondary{% endif %} {% if p.bloqueado_recepcion %}disabled{% endif %}">
+              {% if p.enfriado %}✔{% else %}✖{% endif %}
+            </a>
+          </td>
+
+          <!-- Fumigado -->
+          <td>
+            {% if p.organico %}
+              <span class="badge bg-secondary">No aplica</span>
+            {% else %}
+              <a href="{% url 'actualizar_estado' p.id %}?accion=fumigado"
+                 class="btn btn-sm {% if p.fumigado %}btn-success{% else %}btn-outline-secondary{% endif %} {% if p.bloqueado_recepcion %}disabled{% endif %}">
+                {% if p.fumigado %}✔{% else %}✖{% endif %}
+              </a>
+            {% endif %}
+          </td>
+
+          <!-- Preprocesos -->
+          <td>
+            <a href="{% url 'actualizar_estado' p.id %}?accion=preprocesos"
+               class="btn btn-sm {% if p.pre_procesos %}btn-success{% else %}btn-outline-secondary{% endif %} {% if p.bloqueado_recepcion %}disabled{% endif %}">
+              {% if p.pre_procesos %}✔{% else %}✖{% endif %}
+            </a>
+          </td>
+
+          <!-- Acciones -->
+          <td>
+            {% if p.bloqueado_recepcion %}
+              <button class="btn btn-success btn-sm" disabled>✅ Guardado</button>
+            {% else %}
+              <a href="{% url 'actualizar_estado' p.id %}?accion=guardar"
+                 class="btn btn-outline-primary btn-sm {% if not p.enfriado and not p.fumigado and not p.pre_procesos %}disabled{% endif %}">
+                 💾 Guardar
+              </a>
+
+              <a href="{% url 'actualizar_estado' p.id %}?accion=organico"
+                 class="btn btn-outline-success btn-sm {% if p.organico %}disabled{% endif %}">
+                 🧬 Orgánico
+              </a>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-center text-muted">No hay pallets registrados aún.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+      <a href="/registrar/" class="btn btn-primary">➕ Registrar nuevo pallet</a>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+{% block content %}
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #4B3EDB 60%, #2E25A0 40%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu-container {
+    background: white;
+    width: 90%;
+    max-width: 1000px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    padding: 40px 30px;
+    text-align: center;
+  }
+
+  h1 {
+    color: #2E25A0;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  .button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .menu-btn {
+    background-color: #4B3EDB;
+    color: white;
+    font-weight: 600;
+    border: none;
+    padding: 18px 35px;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    min-width: 250px;
+  }
+
+  .menu-btn:hover {
+    background-color: #372AAC;
+    transform: translateY(-3px);
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .logout {
+    display: inline-block;
+    margin-top: 40px;
+    color: #372AAC;
+    font-weight: 500;
+  }
+</style>
+
+<div class="menu-container">
+  <h1>⚙️ Panel de Procesos</h1>
+  <div class="button-container">
+    <a href="{% url 'lista_procesos' %}">
+      <button class="menu-btn">🧾 Lista de Procesos</button>
+    </a>
+
+    <a href="{% url 'pallet_terminado' %}">
+      <button class="menu-btn">📦 Agregar Pallets Procesados</button>
+    </a>
+
+    <a href="#">
+      <button class="menu-btn">❄️ IQF y Descarte</button>
+    </a>
+  </div>
+
+  <a href="{% url 'logout' %}" class="logout">Cerrar sesión</a>
+</div>
+{% endblock %}
