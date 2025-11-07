@@ -1,0 +1,183 @@
+{% block content %}
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #372AAC 50%, #4B3EDB 50%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-wrapper {
+    background: #fff;
+    width: 850px;
+    border-radius: 20px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .left-side {
+    flex: 1;
+    background: #ecebff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Arándano minimalista */
+  .blueberry {
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle at 40% 40%, #4B3EDB, #372AAC 80%);
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .blueberry::before {
+    content: "";
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    width: 12px;
+    height: 25px;
+    background: #2f8f3a;
+    border-radius: 5px;
+    transform: translateX(-50%) rotate(-10deg);
+  }
+
+  .blueberry::after {
+    content: "";
+    position: absolute;
+    top: -28px;
+    left: 58%;
+    width: 25px;
+    height: 18px;
+    background: #3faa46;
+    border-radius: 50% 50% 0 0;
+    transform: rotate(25deg);
+  }
+
+  .right-side {
+    flex: 2;
+    padding: 50px;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #372AAC;
+    font-weight: 700;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  form p {
+    margin: 0;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: #372AAC;
+    box-shadow: 0 0 6px rgba(55,42,172,0.4);
+    outline: none;
+  }
+
+  button {
+    margin-top: 15px;
+    background: #372AAC;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 0;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  button:hover {
+    background: #2d218b;
+  }
+
+  .btn-volver {
+    margin-top: 20px;
+    background-color: #6c63ff;
+    color: white;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.3s;
+  }
+
+  .btn-volver:hover {
+    background-color: #5148d3;
+    text-decoration: none;
+  }
+
+  .errors {
+    margin-top: 20px;
+    background: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .form-wrapper {
+      flex-direction: column;
+      width: 90%;
+    }
+    .left-side {
+      display: none;
+    }
+  }
+</style>
+
+<div class="form-wrapper">
+  <div class="left-side">
+    <div class="blueberry"></div>
+  </div>
+
+  <div class="right-side">
+    <h2>Registrar Pallet de Entrada</h2>
+
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Guardar</button>
+    </form>
+
+    {% if form.errors %}
+    <div class="errors">
+      <h4>Errores:</h4>
+      <ul>
+        {% for field, errors in form.errors.items %}
+        <li><strong>{{ field }}:</strong> {{ errors|striptags }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <a href="{% url 'menu_frio' %}" class="btn-volver">⬅️ Volver al Menú de Frío</a>
+  </div>
+</div>
+{% endblock %}

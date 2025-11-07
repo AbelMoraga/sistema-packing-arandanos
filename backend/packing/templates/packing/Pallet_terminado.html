@@ -1,0 +1,165 @@
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Pallet Terminado</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(120deg, #4B3EDB 60%, #372AAC 40%);
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      width: 90%;
+      max-width: 700px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2E25A0;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #2E25A0;
+    }
+
+    input, select {
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      padding: 12px;
+      width: 100%;
+      transition: 0.3s;
+      font-size: 15px;
+    }
+
+    input:focus, select:focus {
+      border-color: #4B3EDB;
+      box-shadow: 0 0 6px rgba(55, 42, 172, 0.3);
+      outline: none;
+    }
+
+    button {
+      background-color: #372AAC;
+      color: white;
+      font-weight: 600;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #2E25A0;
+      transform: translateY(-2px);
+    }
+
+    .volver {
+      display: inline-block;
+      text-align: center;
+      width: 100%;
+      margin-top: 20px;
+      color: #372AAC;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .volver:hover {
+      color: #4B3EDB;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <h2>📦 Registrar Pallet Terminado</h2>
+
+    <!-- Bloque de mensajes -->
+    {% if messages %}
+      <div class="mb-3">
+        {% for message in messages %}
+          <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+      
+      <!-- 🔹 Grupo de Proceso -->
+      <div class="mb-3">
+        <label for="grupo_proceso">Grupo de Proceso</label>
+        <select id="grupo_proceso" name="grupo_proceso" required>
+          <option value="">Seleccione un grupo</option>
+          {% for grupo in grupos %}
+            <option value="{{ grupo.id }}">{{ grupo.id_grupo }} — {{ grupo.variedad }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Distribuidor -->
+      <div class="mb-3">
+        <label for="distribuidor">Distribuidor</label>
+        <select id="distribuidor" name="distribuidor" required>
+          <option value="">Seleccione un distribuidor</option>
+          {% for distribuidor in distribuidores %}
+            <option value="{{ distribuidor.id }}">{{ distribuidor.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Tipo de pocillo -->
+      <div class="mb-3">
+        <label for="tipo_pocillo">Tipo de Pocillo</label>
+        <select id="tipo_pocillo" name="tipo_pocillo" required>
+          <option value="">Seleccione tipo</option>
+          {% for tipo in tipos_pocillo %}
+            <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Cantidad -->
+      <div class="mb-3">
+        <label for="cantidad">Cantidad de cajas</label>
+        <input type="number" id="cantidad" name="cantidad" min="1" required placeholder="Ej: 120">
+      </div>
+
+      <!-- Línea -->
+      <div class="mb-3">
+        <label for="linea">Línea</label>
+        <select id="linea" name="linea" required>
+          <option value="">Seleccione línea</option>
+          {% for linea in lineas %}
+            <option value="{{ linea.id }}">{{ linea.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button type="submit">✅ Registrar Pallet</button>
+    </form>
+
+    <a href="{% url 'menu_procesos' %}" class="volver">⬅️ Volver al Menú de Procesos</a>
+  </div>
+</body>
+</html>
+{% endblock %}
