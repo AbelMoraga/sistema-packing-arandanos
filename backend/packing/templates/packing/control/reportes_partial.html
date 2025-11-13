@@ -1,0 +1,94 @@
+<div class="panel fadeIn">
+
+    <h2>📊 Reportes Generales</h2>
+
+    <!-- Tarjetas resumen -->
+    <div class="cards">
+        <div class="card">📥 <b>Pallets recibidos:</b> {{ total_pallets }}</div>
+        <div class="card">⚙️ <b>Procesados:</b> {{ total_procesados }}</div>
+        <div class="card">🧺 <b>Grupos:</b> {{ total_grupos }}</div>
+        <div class="card">📦 <b>Terminados:</b> {{ total_terminados }}</div>
+        <div class="card">❄️ <b>Total IQF:</b> {{ total_iqf }} kg</div>
+        <div class="card">🗑️ <b>Descarte:</b> {{ total_descarte }} kg</div>
+    </div>
+
+    <hr>
+
+    <!-- Gráfico -->
+    <h3>Calidad de pallets terminados</h3>
+
+    <div class="graf-container">
+        <canvas id="grafCalidad"
+            data-labels='[{% for c in calidad_terminados %}"{{ c.calidad }}"{% if not forloop.last %},{% endif %}{% endfor %}]'
+            data-values='[{% for c in calidad_terminados %}{{ c.total }}{% if not forloop.last %},{% endif %}{% endfor %}]'>
+        </canvas>
+    </div>
+
+    <hr>
+
+    <!-- Tabla productor -->
+    <h3>Resumen por productor</h3>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Productor</th>
+                <th>Total Pallets</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in pallets_por_productor %}
+            <tr>
+                <td>{{ item.productor__nombre }}</td>
+                <td>{{ item.total }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" class="text-center text-muted py-3">Sin datos</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+<style>
+
+.panel {
+    padding: 20px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: #ffffff;
+    padding: 14px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.08);
+    border: 1px solid #eee;
+}
+
+.graf-container {
+    width: 100%;
+    max-width: 600px;           /* evita que sea enorme */
+    height: 300px;              /* alto fijo */
+    margin: 0 auto 25px auto;   /* centrado */
+}
+
+#grafCalidad {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.table {
+    background: white;
+    border-radius: 8px;
+}
+
+</style>

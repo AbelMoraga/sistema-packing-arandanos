@@ -3,116 +3,112 @@
   body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #2C246D 50%, #4B3EDB 50%);
+    background: linear-gradient(120deg, #4B3EDB 60%, #2E25A0 40%);
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
+    justify-content: center;
   }
 
-  .main-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #0597A4;
-    width: 80%;
-    max-width: 1100px;
-    height: 500px;
+  .menu-container {
+    background: white;
+    width: 90%;
+    max-width: 1000px;
     border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    padding: 40px 30px;
+    text-align: center;
   }
 
-  /* Columna izquierda con los botones */
-  .left {
-    flex: 1;
+  h1 {
+    color: #2E25A0;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  .button-container {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 30px;
-    padding-left: 30px;
+    gap: 25px;
   }
 
   .menu-btn {
-    background: #8E8FD9;
-    border: none;
-    border-radius: 50px;
-    padding: 18px 25px;
-    font-size: 18px;
+    background-color: #4B3EDB;
+    color: white;
     font-weight: 600;
-    color: #1E1B5C;
+    border: none;
+    padding: 18px 35px;
+    border-radius: 12px;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    min-width: 250px;
   }
 
   .menu-btn:hover {
-    background: #726dd3;
-    color: white;
+    background-color: #372AAC;
     transform: translateY(-3px);
   }
 
-  /* Columna derecha con la imagen */
-  .right {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  a {
+    text-decoration: none;
   }
 
-  .img-frame {
-    background-color: #A6A4E0;
-    border-radius: 25px;
-    padding: 20px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  /* Botón de cerrar sesión */
+  .logout-btn {
+    margin-top: 40px;
+    border: 2px solid #dc3545;
+    color: #dc3545;
+    font-weight: 600;
+    background: transparent;
+    padding: 12px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
   }
 
-  .img-frame img {
-    border-radius: 15px;
-    width: 280px;
-    height: auto;
-    display: block;
+  .logout-btn:hover {
+    background-color: #dc3545;
+    color: white;
+    transform: translateY(-2px);
   }
 
-  @media (max-width: 900px) {
-    .main-container {
-      flex-direction: column;
-      height: auto;
-      padding: 20px;
+  @media (max-width: 768px) {
+    .menu-container {
+      width: 95%;
+      padding: 25px;
     }
-    .left {
-      align-items: center;
-      padding: 0;
-    }
+
     .menu-btn {
-      width: 80%;
-    }
-    .right {
-      margin-top: 30px;
+      min-width: 200px;
+      padding: 15px 25px;
     }
   }
 </style>
 
-<div class="main-container">
-  <div class="left">
-    <form action="{% url 'registrar_pallets_entrada' %}">
-      <button class="menu-btn" type="submit">Registrar Entrada de Pallets</button>
-    </form>
+<div class="menu-container">
+  <h1>❄️ Panel de Recepción / Frío</h1>
 
-    <form action="{% url 'lista_pallets' %}">
-      <button class="menu-btn" type="submit">Lista de Pallets Ingresados</button>
-    </form>
+  <div class="button-container">
+    <!-- Registrar Entrada -->
+    <a href="{% url 'registrar_pallets_entrada' %}">
+      <button class="menu-btn">📦 Registrar Entrada de Pallets</button>
+    </a>
 
-    <form action="#">
-      <button class="menu-btn" type="submit">Pallets para Despachar</button>
-    </form>
+    <!-- Lista de Pallets -->
+    <a href="{% url 'lista_pallets' %}">
+      <button class="menu-btn">🧾 Lista de Pallets Ingresados</button>
+    </a>
+
+    <!-- Pallets para Despachar (próximamente) -->
+    <a href="{% url 'lista_pallets_terminados' %}">
+      <button class="menu-btn">🚚 Pallets Terminados / Despacho</button>
+    </a>
   </div>
 
-  <div class="right">
-    <div class="img-frame">
-      <img src="https://cdn.pixabay.com/photo/2016/07/21/10/44/blueberries-1536546_1280.jpg" alt="Arándanos">
-    </div>
-  </div>
+  <a href="{% url 'logout' %}">
+    <button class="logout-btn">🚪 Cerrar sesión</button>
+  </a>
 </div>
 {% endblock %}

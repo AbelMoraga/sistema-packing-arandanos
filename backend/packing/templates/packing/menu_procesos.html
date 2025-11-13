@@ -15,7 +15,7 @@
     width: 90%;
     max-width: 1000px;
     border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     padding: 40px 30px;
     text-align: center;
   }
@@ -55,16 +55,40 @@
     text-decoration: none;
   }
 
-  .logout {
-    display: inline-block;
+  /* Botón de cerrar sesión (unificado) */
+  .logout-btn {
     margin-top: 40px;
-    color: #372AAC;
-    font-weight: 500;
+    border: 2px solid #dc3545;
+    color: #dc3545;
+    font-weight: 600;
+    background: transparent;
+    padding: 12px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .logout-btn:hover {
+    background-color: #dc3545;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .menu-container {
+      width: 95%;
+      padding: 25px;
+    }
+    .menu-btn {
+      min-width: 200px;
+      padding: 15px 25px;
+    }
   }
 </style>
 
 <div class="menu-container">
   <h1>⚙️ Panel de Procesos</h1>
+
   <div class="button-container">
     <a href="{% url 'lista_procesos' %}">
       <button class="menu-btn">🧾 Lista de Procesos</button>
@@ -74,11 +98,13 @@
       <button class="menu-btn">📦 Agregar Pallets Procesados</button>
     </a>
 
-    <a href="#">
+    <a href="{% url 'registrar_iqf_descarte' %}">
       <button class="menu-btn">❄️ IQF y Descarte</button>
     </a>
   </div>
 
-  <a href="{% url 'logout' %}" class="logout">Cerrar sesión</a>
+  <a href="{% url 'logout' %}">
+    <button class="logout-btn">🚪 Cerrar sesión</button>
+  </a>
 </div>
 {% endblock %}

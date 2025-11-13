@@ -104,17 +104,6 @@
 
     <form method="POST">
       {% csrf_token %}
-      
-      <!-- 🔹 Grupo de Proceso -->
-      <div class="mb-3">
-        <label for="grupo_proceso">Grupo de Proceso</label>
-        <select id="grupo_proceso" name="grupo_proceso" required>
-          <option value="">Seleccione un grupo</option>
-          {% for grupo in grupos %}
-            <option value="{{ grupo.id }}">{{ grupo.id_grupo }} — {{ grupo.variedad }}</option>
-          {% endfor %}
-        </select>
-      </div>
 
       <!-- Distribuidor -->
       <div class="mb-3">
@@ -152,6 +141,18 @@
           {% for linea in lineas %}
             <option value="{{ linea.id }}">{{ linea.nombre }}</option>
           {% endfor %}
+        </select>
+      </div>
+
+      <!-- Calidad -->
+      <div class="mb-3">
+        <label for="calidad">Calidad</label>
+        <select id="calidad" name="calidad" required>
+          <option value="">Seleccione calidad</option>
+          <option value="rojo" style="color:red;">🔴 Rojo</option>
+          <option value="amarillo" style="color:gold;">🟡 Amarillo</option>
+          <option value="verde" style="color:green;">🟢 Verde</option>
+          <option value="azul" style="color:blue;">🔵 Azul</option>
         </select>
       </div>
 
