@@ -1,0 +1,136 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Auditoría del Sistema</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #3A2EC8, #4C3FE0);
+            margin: 0;
+            padding: 40px;
+            color: #fff;
+        }
+
+        /* Botón volver arriba */
+        .btn-volver {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: #4A32D4;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.15s;
+        }
+        .btn-volver:hover {
+            background: #3826a6;
+        }
+
+        /* Contenedor */
+        .panel-wrapper {
+            max-width: 1300px;
+            margin: 80px auto;
+            background: rgba(255,255,255,0.12);
+            border-radius: 25px;
+            padding: 35px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0px 10px 35px rgba(0,0,0,0.25);
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        /* Tabla */
+        table {
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            color: #333;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        th {
+            background: #4A32D4;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover td {
+            background: #f4f3ff;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            font-weight: 500;
+            color: #777;
+        }
+
+        /* Usuario badge */
+        .user-badge {
+            font-weight: 600;
+            color: #4A32D4;
+        }
+    </style>
+</head>
+<body>
+
+<!-- BOTÓN SUPERIOR -->
+<a href="{% url 'panel_admin' %}" class="btn-volver">
+    ⬅ Volver al panel
+</a>
+
+<div class="panel-wrapper">
+
+    <h1>📋 Auditoría del Sistema</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Acción</th>
+                <th>Módulo</th>
+                <th>Detalle</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in registros %}
+            <tr>
+                <td class="user-badge">{{ r.usuario }}</td>
+                <td>{{ r.accion }}</td>
+                <td>{{ r.modulo }}</td>
+                <td>{{ r.detalle }}</td>
+                <td>{{ r.fecha|date:"d-m-Y H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="empty">
+                    No hay registros aún.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

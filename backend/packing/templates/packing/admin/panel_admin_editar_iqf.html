@@ -1,0 +1,148 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar registro IQF</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: #3f3dff;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        /* Información del grupo */
+        .iqf-info {
+            margin-top: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 16px;
+            color: #e0e0ff;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .iqf-info span {
+            background: rgba(255,255,255,0.12);
+            padding: 6px 14px;
+            border-radius: 10px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+
+        /* Caja principal */
+        .card-box {
+            background: white;
+            color: black;
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .btn-purple { 
+            background:#4338ca; 
+            color:white; 
+        }
+
+        .btn-purple:hover { 
+            background:#312e81; 
+        }
+
+        /* Notificación Fortnite */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99999;
+        }
+
+        .fortnite-toast {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-top: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            animation: slideIn 0.4s ease-out;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0%); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Editar registro IQF</h1>
+
+<!-- Información superior -->
+<div class="iqf-info">
+    <span><strong>Grupo:</strong> {{ obj.grupo_proceso }}</span>
+    <span><strong>Productor:</strong> {{ obj.productor }}</span>
+    <span><strong>Variedad:</strong> {{ obj.variedad }}</span>
+    
+</div>
+
+<div class="card-box">
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Peso IQF -->
+        <label><b>Peso IQF (kg)</b></label>
+        <input type="number" step="0.01" name="peso_iqf" value="{{ obj.peso_iqf }}" class="form-control mb-3">
+
+        <!-- Peso Descarte -->
+        <label><b>Peso Descarte (kg)</b></label>
+        <input type="number" step="0.01" name="peso_descarte" value="{{ obj.peso_descarte }}" class="form-control mb-3">
+
+        <!-- Peso Final -->
+        <label><b>Peso final (kg)</b></label>
+        <input type="number" step="0.01" name="peso_final" value="{{ obj.peso_final }}" class="form-control mb-3">
+
+        <!-- Estado -->
+        <label><b>Estado</b></label>
+        <select name="estado" class="form-control mb-3">
+            <option value="EN_IQF" {% if obj.estado == "EN_IQF" %}selected{% endif %}>En IQF</option>
+            <option value="DESPACHADO" {% if obj.estado == "DESPACHADO" %}selected{% endif %}>Despachado</option>
+        </select>
+
+        <button class="btn-purple w-100 mt-3">Guardar cambios</button>
+    </form>
+
+    <a href="/panel-admin/editar/iqf/0/" class="btn btn-secondary w-100 mt-3">
+        ← Volver a la lista
+    </a>
+
+</div>
+
+<!-- Notificaciones -->
+<div class="toast-container">
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="fortnite-toast">{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+</body>
+</html>

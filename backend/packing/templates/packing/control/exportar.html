@@ -1,0 +1,38 @@
+{% extends "packing/control/menu_control_base.html" %}
+
+{% block activo_exportar %}active{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">📤 Exportar datos</h2>
+<p class="text-muted">Selecciona qué información deseas exportar desde el sistema.</p>
+
+<div class="list-group">
+
+    <a href="{% url 'exportar_pallets_terminados_excel' %}"
+       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        📦 Pallets Terminados
+        <span class="badge bg-success">Excel</span>
+    </a>
+
+    <a href="{% url 'exportar_iqf_excel' %}"
+       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        ❄ IQF y Descarte
+        <span class="badge bg-success">Excel</span>
+    </a>
+
+    <a href="{% url 'exportar_recepcion_excel' %}"
+       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        📥 Recepción de Pallets
+        <span class="badge bg-success">Excel</span>
+    </a>
+
+    <a href="{% url 'exportar_procesos_csv' %}"
+       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        ⚙ Procesos
+        <span class="badge bg-secondary">CSV</span>
+    </a>
+
+</div>
+
+{% endblock %}

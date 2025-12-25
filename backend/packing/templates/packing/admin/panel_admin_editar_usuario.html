@@ -1,0 +1,117 @@
+{% load static %}
+
+<style>
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #3A2EC8 0%, #4C3FE0 70%);
+    font-family: 'Poppins', sans-serif;
+    color: white;
+}
+
+/* Contenedor principal */
+.edit-wrapper {
+    width: 90%;
+    max-width: 600px;
+    margin: 120px auto;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+}
+
+/* Título */
+.titulo {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Inputs */
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    margin-top: 5px;
+    margin-bottom: 18px;
+    font-size: 16px;
+}
+
+/* Botones */
+.btn-morado {
+    background: #4A32D4;
+    padding: 12px 20px;
+    border-radius: 12px;
+    color: white;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .15s;
+}
+.btn-morado:hover {
+    background: #3928a8;
+}
+
+.btn-volver {
+    background: #bbbbbb;
+    padding: 12px 20px;
+    border-radius: 12px;
+    color: #333;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .15s;
+    margin-left: 10px;
+}
+.btn-volver:hover {
+    background: #a8a8a8;
+}
+
+.botones {
+    text-align: center;
+    margin-top: 10px;
+}
+
+</style>
+
+<div class="edit-wrapper">
+
+    <div class="titulo">✏ Editar Usuario</div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Usuario:</label>
+        <input type="text" name="username" value="{{ usuario.username }}" class="form-control">
+
+        <label>Correo:</label>
+        <input type="email" name="correo" value="{{ usuario.email }}" class="form-control">
+
+        <label>Nueva Contraseña (opcional):</label>
+        <input type="password" name="password" placeholder="Dejar vacío para no cambiar" class="form-control">
+
+        <label>Grupo:</label>
+        <select name="grupo" class="form-control">
+            <option value="">Sin grupo</option>
+            {% for g in grupos %}
+            <option value="{{ g.id }}"
+                {% if usuario.groups.first and usuario.groups.first.id == g.id %}selected{% endif %}
+            >{{ g.name }}</option>
+            {% endfor %}
+        </select>
+
+        <div class="botones">
+            <button class="btn-morado">Guardar Cambios</button>
+            <a href="{% url 'panel_admin_usuarios' %}"><button type="button" class="btn-volver">Volver</button></a>
+        </div>
+
+    </form>
+
+</div>

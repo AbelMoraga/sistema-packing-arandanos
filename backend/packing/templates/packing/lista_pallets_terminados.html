@@ -111,7 +111,7 @@
   <div class="container">
     <h2>📦 Pallets Terminados</h2>
 
-    <!-- ✅ Filtros -->
+ 
     <form method="get" class="filter-bar">
       <select name="estado" class="form-select w-auto">
         <option value="Todos" {% if request.GET.estado == "Todos" or not request.GET.estado %}selected{% endif %}>
@@ -134,7 +134,7 @@
       <a href="{% url 'lista_pallets_terminados' %}" class="btn btn-outline-secondary">♻ Limpiar</a>
     </form>
 
-    <!-- ✅ Tabla -->
+    
     <table class="table table-hover text-center align-middle">
       <thead class="table-dark">
         <tr>
@@ -176,7 +176,7 @@
       </tbody>
     </table>
 
-    <a href="{% url 'menu_procesos' %}" class="volver">⬅ Volver al Menú de Procesos</a>
+    <a href="{% url 'menu_frio' %}" class="volver">⬅ Volver al Menú Recepcion</a>
   </div>
 </body>
 </html>

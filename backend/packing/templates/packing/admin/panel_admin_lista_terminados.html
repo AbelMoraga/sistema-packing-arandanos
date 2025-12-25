@@ -1,0 +1,209 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pallets Terminados – Panel Administrativo</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg,
+                #3A2EC8 0%,
+                #3A2EC8 55%,
+                #4C3FE0 55%,
+                #4C3FE0 100%);
+            color: #fff;
+        }
+
+        .content-wrapper {
+            width: 90%;
+            max-width: 1250px;
+            margin: auto;
+            padding-top: 30px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .logout-btn {
+            background: rgba(19, 17, 77, 0.9);
+            color: white;
+            padding: 9px 20px;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .logout-btn:hover {
+            background: #ff4b81;
+        }
+
+        .main-card {
+            background: rgba(0,0,0,0.18);
+            border-radius: 26px;
+            padding: 26px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+        }
+
+        .table-wrapper {
+            margin-top: 18px;
+            background: white;
+            border-radius: 18px;
+            padding: 8px 0;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            align-items: center;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        .btn-purple {
+            background:#4338ca;
+            color:white;
+            border:none;
+            padding:8px 16px;
+            border-radius:8px;
+        }
+
+        table.custom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: #4C3FE0;
+            color: white;
+        }
+
+        th {
+            padding: 12px 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        td {
+            padding: 12px 10px;
+            font-size: 14px;
+            color: #000 !important;
+        }
+
+        tbody tr:nth-child(odd) { background: #ffffff; }
+        tbody tr:nth-child(even){ background: #f4f4f4; }
+
+        .col-id { width: 60px; text-align: center; }
+        .col-accion { width: 100px; text-align: center; }
+
+        .btn-edit {
+            padding: 6px 16px;
+            border-radius: 999px;
+            background: #4C3FE0;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .btn-edit:hover {
+            background: #3729b6;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="content-wrapper">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <a href="/panel-admin/" class="logout-btn">Volver al menú</a>
+        <a href="{% url 'logout' %}" class="logout-btn">Cerrar sesión</a>
+    </div>
+
+    <div class="main-card">
+
+        <h3>Pallets Terminados</h3>
+        <p>Selecciona un pallet terminado o utiliza el buscador por ID.</p>
+
+        <!-- 🔍 BUSCADOR -->
+        <form method="GET" class="search-box">
+            <input type="number" name="buscar" class="form-control"
+                   placeholder="Buscar por ID..."
+                   value="{{ buscar }}">
+
+            <button class="btn-purple">Buscar</button>
+
+            {% if buscar %}
+                <a href="/panel-admin/editar/terminados/0/" class="btn btn-secondary">
+                    Mostrar todos
+                </a>
+            {% endif %}
+        </form>
+
+        <!-- TABLA -->
+        <div class="table-wrapper">
+            <table class="table custom-table">
+                <thead class="table-light">
+                    <tr>
+                        <th class="col-id">ID</th>
+                        <th>Distribuidor</th>
+                        <th>Variedad</th>
+                        <th>Cajas</th>
+                        <th>Calidad</th>
+                        <th>Estado</th>
+                        <th class="col-accion">Acción</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for obj in objetos %}
+                    <tr>
+                        <td class="col-id">{{ obj.id }}</td>
+                        <td>{{ obj.distribuidor }}</td>
+                        <td>{{ obj.variedad }}</td>
+                        <td>{{ obj.cantidad_cajas }}</td>
+                        <td>{{ obj.calidad }}</td>
+                        <td>{{ obj.estado }}</td>
+                        <td class="col-accion">
+                            <a href="{% url 'panel_admin_editar' 'terminados' obj.id %}" class="btn-edit">
+                                Editar
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-3 text-muted">
+                            No se encontraron pallets terminados.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

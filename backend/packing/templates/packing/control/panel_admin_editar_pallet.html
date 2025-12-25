@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar pallet</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: #3f3dff;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            padding: 40px;
+        }
+
+        .title-wrapper {
+            max-width: 650px;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+
+        .card-box {
+            background: white;
+            color: black;
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 650px;
+            margin: auto;
+        }
+
+        .btn-purple { background:#4338ca; color:white; }
+        .btn-purple:hover { background:#312e81; }
+
+        /* Notificaciones Fortnite */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99999;
+        }
+
+        .fortnite-toast {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 14px;
+            margin-top: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            animation: slideIn 0.4s ease-out;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(140%); opacity: 0; }
+            to { transform: translateX(0%); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="title-wrapper">
+    <h1 style="margin:0;">Editar pallet</h1>
+</div>
+
+<div class="card-box">
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- PRODUCTOR -->
+        <label><b>Productor</b></label>
+        <select name="productor" class="form-control mb-3">
+            {% for prod in productores %}
+                <option value="{{ prod.id }}"
+                    {% if obj.productor.id == prod.id %}selected{% endif %}>
+                    {{ prod.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <!-- VARIEDAD -->
+        <label><b>Variedad</b></label>
+        <select name="variedad" class="form-control mb-3">
+            {% for var in variedades %}
+                <option value="{{ var.id }}"
+                    {% if obj.variedad.id == var.id %}selected{% endif %}>
+                    {{ var.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <!-- TIPO ENVASE -->
+        <label><b>Tipo de envase</b></label>
+        <select name="tipo_envase" class="form-control mb-3">
+            {% for env in envases %}
+                <option value="{{ env.id }}"
+                    {% if obj.tipo_envase.id == env.id %}selected{% endif %}>
+                    {{ env.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <!-- CANTIDAD -->
+        <label><b>Cantidad de cajas</b></label>
+        <input type="number" name="cantidad_cajas" value="{{ obj.cantidad_cajas }}" class="form-control mb-3">
+
+        <!-- PESO NETO -->
+        <label><b>Peso neto (kg)</b></label>
+        <input type="text" name="peso_neto" value="{{ obj.peso_neto }}" class="form-control mb-3">
+
+        <button class="btn-purple w-100 mt-3">Guardar cambios</button>
+    </form>
+
+    <a href="/panel-admin/editar/pallet/0/" class="btn btn-secondary w-100 mt-3">
+        ← Volver a la lista
+    </a>
+
+</div>
+
+<!-- NOTIFICACIONES -->
+<div class="toast-container">
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="fortnite-toast">
+                {{ msg }}
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+</body>
+</html>

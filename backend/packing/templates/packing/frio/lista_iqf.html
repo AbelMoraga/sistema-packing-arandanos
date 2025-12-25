@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista IQF / Descarte (Frío)</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #4B3EDB 60%, #2E25A0 40%);
+            min-height: 100vh;
+        }
+
+        /* Botón volver */
+        .btn-volver {
+            position: fixed;
+            top: 25px;
+            right: 30px;
+            background: #4B3EDB;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 6px 15px rgba(0,0,0,.25);
+            transition: .2s;
+            z-index: 10;
+        }
+        .btn-volver:hover {
+            background: #372AAC;
+            transform: translateY(-2px);
+        }
+
+        /* Card principal */
+        .panel-wrapper {
+            width: 92%;
+            max-width: 1300px;
+            margin: 120px auto;
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0,0,0,.25);
+        }
+
+        .titulo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #2E25A0;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* filtros */
+        .filtros {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filtros input,
+        .filtros select {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .btn-filtrar {
+            background: #4B3EDB;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-weight: 600;
+        }
+
+        /* tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #1f2937;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        /* estados */
+        .estado {
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            color: white;
+            display: inline-block;
+        }
+
+        .en-iqf { background: #2563eb; }
+        .despachado { background: #16a34a; }
+
+        /* acciones */
+        .btn-despachar {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 6px 14px;
+            font-weight: 600;
+        }
+
+        .btn-despachar:hover {
+            background: #d97706;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- BOTÓN VOLVER -->
+<a href="{% url 'menu_frio' %}" class="btn-volver">← Volver al Menú Frío</a>
+
+<div class="panel-wrapper">
+
+    <div class="titulo">🧊 Lista IQF / Descarte (Frío)</div>
+
+    <!-- FILTROS -->
+    <form method="get" class="filtros">
+        <input type="text" name="buscar" placeholder="Buscar ID o grupo" value="{{ buscar }}">
+        <select name="estado">
+            <option value="">Estado</option>
+            <option value="EN_IQF">En IQF</option>
+            <option value="DESPACHADO">Despachado</option>
+        </select>
+        <button class="btn-filtrar">Filtrar</button>
+    </form>
+
+    <!-- TABLA -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Grupo</th>
+                <th>Productor</th>
+                <th>Variedad</th>
+                <th>Días</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in iqf %}
+            <tr>
+                <td>{{ i.id }}</td>
+                <td>{{ i.grupo_proceso.id_grupo }}</td>
+                <td>{{ i.productor }}</td>
+                <td>{{ i.variedad }}</td>
+                <td>{{ i.dias_en_iqf }}</td>
+                <td>
+                    {% if i.estado == "EN_IQF" %}
+                        <span class="estado en-iqf">En IQF</span>
+                    {% else %}
+                        <span class="estado despachado">Despachado</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if i.estado == "EN_IQF" %}
+                        <a href="{% url 'despachar_iqf_frio' i.id %}">
+                            <button class="btn-despachar">📦 Despachar</button>
+                        </a>
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

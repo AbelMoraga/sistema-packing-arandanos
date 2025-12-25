@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Panel Administrativo 🛠️</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #02051b;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* CONTENEDOR DE NOTIFICACIONES (FORTNITE STYLE) */
+        #notif-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99999;
+        }
+
+        .notif {
+            background: linear-gradient(135deg, #4A32D4, #6A56FF);
+            padding: 14px 22px;
+            color: white;
+            border-radius: 12px;
+            margin-top: 10px;
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+            border-left: 4px solid #FFD85A;
+            transform: translateX(150%);
+            animation: notifSlide 0.6s forwards, notifFade 0.6s 3.5s forwards;
+        }
+
+        @keyframes notifSlide {
+            from { transform: translateX(150%); opacity: 0; }
+            to   { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes notifFade {
+            from { opacity: 1; }
+            to   { opacity: 0; transform: translateX(150%); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Contenido del panel -->
+    {% block body %}
+    <div class="admin-container">
+        {% block content %}{% endblock %}
+    </div>
+    {% endblock %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SONIDO NOTIFICACIÓN (FORTNITE) -->
+    <audio id="notif-sound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+
+    <!-- CONTENEDOR DE NOTIFICACIONES -->
+    <div id="notif-container"></div>
+
+    <!-- SCRIPT DE NOTIFICACIONES -->
+    <script>
+        function showNotif(msg) {
+            let box = document.createElement("div");
+            box.className = "notif";
+            box.innerText = msg;
+            document.getElementById("notif-container").appendChild(box);
+
+            // reproducir sonido
+            const snd = document.getElementById("notif-sound");
+            snd.currentTime = 0;
+            snd.play();
+
+            // remover después de animación
+            setTimeout(() => box.remove(), 4300);
+        }
+    </script>
+
+    <!-- Pasar los mensajes de Django al sistema Fortnite -->
+    {% if messages %}
+    <script>
+        {% for m in messages %}
+            showNotif("{{ m }}");
+        {% endfor %}
+    </script>
+    {% endif %}
+
+</body>
+
+</html>

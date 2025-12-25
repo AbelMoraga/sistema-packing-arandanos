@@ -91,7 +91,6 @@
   <div class="form-container">
     <h2>📦 Registrar Pallet Terminado</h2>
 
-    <!-- Bloque de mensajes -->
     {% if messages %}
       <div class="mb-3">
         {% for message in messages %}
@@ -105,7 +104,6 @@
     <form method="POST">
       {% csrf_token %}
 
-      <!-- Distribuidor -->
       <div class="mb-3">
         <label for="distribuidor">Distribuidor</label>
         <select id="distribuidor" name="distribuidor" required>
@@ -116,7 +114,6 @@
         </select>
       </div>
 
-      <!-- Tipo de pocillo -->
       <div class="mb-3">
         <label for="tipo_pocillo">Tipo de Pocillo</label>
         <select id="tipo_pocillo" name="tipo_pocillo" required>
@@ -127,13 +124,27 @@
         </select>
       </div>
 
-      <!-- Cantidad -->
       <div class="mb-3">
-        <label for="cantidad">Cantidad de cajas</label>
-        <input type="number" id="cantidad" name="cantidad" min="1" required placeholder="Ej: 120">
+        <label for="variedad">Variedad</label>
+        <select id="variedad" name="variedad" required>
+          <option value="">Seleccione variedad</option>
+          {% for v in variedades %}
+            <option value="{{ v.id }}">{{ v.nombre }}</option>
+          {% endfor %}
+        </select>
       </div>
 
-      <!-- Línea -->
+      <div class="mb-3">
+        <label for="cantidad">Cantidad de cajas</label>
+        <input 
+            type="text" 
+            id="cantidad" 
+            name="cantidad" 
+            inputmode="numeric" 
+            required
+            placeholder="Ej: 1.200">
+      </div>
+
       <div class="mb-3">
         <label for="linea">Línea</label>
         <select id="linea" name="linea" required>
@@ -144,15 +155,14 @@
         </select>
       </div>
 
-      <!-- Calidad -->
       <div class="mb-3">
         <label for="calidad">Calidad</label>
         <select id="calidad" name="calidad" required>
           <option value="">Seleccione calidad</option>
-          <option value="rojo" style="color:red;">🔴 Rojo</option>
-          <option value="amarillo" style="color:gold;">🟡 Amarillo</option>
-          <option value="verde" style="color:green;">🟢 Verde</option>
-          <option value="azul" style="color:blue;">🔵 Azul</option>
+          <option value="rojo">🔴 Rojo</option>
+          <option value="amarillo">🟡 Amarillo</option>
+          <option value="verde">🟢 Verde</option>
+          <option value="azul">🔵 Azul</option>
         </select>
       </div>
 
@@ -161,6 +171,25 @@
 
     <a href="{% url 'menu_procesos' %}" class="volver">⬅️ Volver al Menú de Procesos</a>
   </div>
+
+  <script>
+  function formatNumber(input) {
+      let value = input.value.replace(/\./g, "");
+      if (isNaN(value)) return;
+      input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+      const inputCantidad = document.getElementById("cantidad");
+
+      inputCantidad.addEventListener("input", () => formatNumber(inputCantidad));
+
+      inputCantidad.closest("form").addEventListener("submit", () => {
+          inputCantidad.value = inputCantidad.value.replace(/\./g, "");
+      });
+  });
+  </script>
+
 </body>
 </html>
 {% endblock %}

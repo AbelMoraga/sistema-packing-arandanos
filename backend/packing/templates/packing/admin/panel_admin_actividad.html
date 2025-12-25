@@ -1,0 +1,58 @@
+<div class="tarjetas-grid">
+
+    <!-- 1️⃣ Pallets en Recepción -->
+    <div class="tarjeta">
+        <h3>Editar Pallets de Recepción</h3>
+        <p>Pallets ingresados a frío, recepción y pre-proceso.</p>
+
+        <button class="btn-accion"
+            onclick="location.href='{% url 'panel_admin_editar' 'pallet' 0 %}'">
+            Abrir editor
+        </button>
+    </div>
+
+    <!-- 2️⃣ Pallets Terminados -->
+    <div class="tarjeta">
+        <h3>Editar Pallets Terminados</h3>
+        <p>Pallets listos para despacho y calidad revisada.</p>
+
+        <button class="btn-accion"
+            onclick="location.href='{% url 'panel_admin_editar' 'terminados' 0 %}'">
+            Abrir editor
+        </button>
+    </div>
+
+    <!-- 3️⃣ IQF / Descarte -->
+    <div class="tarjeta">
+        <h3>Editar IQF y Descarte</h3>
+        <p>Registros de IQF, descarte y días en proceso.</p>
+
+        <button class="btn-accion"
+            onclick="location.href='{% url 'panel_admin_editar' 'iqf' 0 %}'">
+            Abrir editor
+        </button>
+    </div>
+
+    <!-- 4️⃣ Usuarios -->
+    <div class="tarjeta">
+        <h3>Administrar Usuarios</h3>
+        <p>Roles, permisos y cuentas del sistema.</p>
+
+        <button class="btn-accion"
+            onclick="location.href='{% url 'panel_admin_usuarios' %}'">
+            Abrir gestión
+        </button>
+    </div>
+
+    <!-- 5️⃣ Auditoría del Sistema -->
+    <div class="tarjeta">
+        <h3>Auditoría del Sistema</h3>
+        <p>Registro de accesos y acciones realizadas por los usuarios.</p>
+
+        <button class="btn-accion"
+            onclick="location.href='{% url 'panel_admin_actividad' %}'">
+            Ver auditoría
+        </button>
+    </div>
+
+</div>

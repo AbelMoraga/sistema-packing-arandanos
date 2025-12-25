@@ -1,0 +1,168 @@
+{% load static %}
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #3A2EC8 0%, #4C3FE0 70%);
+        color: #fff;
+    }
+
+    .panel-container {
+        width: 80%;
+        margin: 120px auto 0 auto;
+    }
+
+    .titulo-panel {
+        font-size: 38px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        margin-left: 10px;
+    }
+
+    .panel-box {
+        background: rgba(255, 255, 255, 0.13);
+        padding: 40px;
+        border-radius: 22px;
+        backdrop-filter: blur(15px);
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    /* GRID DE TARJETAS */
+    .tarjetas-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px 25px;
+    }
+
+    .tarjeta {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 18px;
+        color: #444;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .tarjeta h3 {
+        color: #4A32D4;
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    .btn-accion {
+        margin-top: 15px;
+        background: #4A32D4;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        font-size: 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .btn-accion:hover {
+        background: #3826a6;
+    }
+
+    .btn-logout {
+        position: absolute;
+        top: 25px;
+        right: 40px;
+        background: #4A32D4;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.2s;
+    }
+
+    .btn-logout:hover {
+        background: #3826a6;
+    }
+
+    /* 👉 Auditoría centrada */
+    .tarjeta.auditoria {
+        grid-column: 1 / -1;   /* ocupa ambas columnas */
+        max-width: 600px;
+        margin: 0 auto;       /* centrada */
+    }
+</style>
+
+<!-- BOTÓN CERRAR SESIÓN -->
+<a href="{% url 'logout' %}" class="btn-logout">Cerrar sesión</a>
+
+<div class="panel-container">
+
+    <div class="titulo-panel">Panel Administrativo</div>
+
+    <div class="panel-box">
+
+        <div class="tarjetas-grid">
+
+            <!-- 1️⃣ Pallets Recepción -->
+            <div class="tarjeta">
+                <h3>Editar Pallets de Recepción</h3>
+                <p>Pallets ingresados a frío, recepción y pre-proceso.</p>
+
+                <button class="btn-accion"
+                    onclick="location.href='{% url 'panel_admin_editar' 'pallet' 0 %}'">
+                    Abrir editor
+                </button>
+            </div>
+
+            <!-- 2️⃣ Pallets Terminados -->
+            <div class="tarjeta">
+                <h3>Editar Pallets Terminados</h3>
+                <p>Pallets listos para despacho y calidad revisada.</p>
+
+                <button class="btn-accion"
+                    onclick="location.href='{% url 'panel_admin_editar' 'terminados' 0 %}'">
+                    Abrir editor
+                </button>
+            </div>
+
+            <!-- 3️⃣ IQF / Descarte -->
+            <div class="tarjeta">
+                <h3>Editar IQF y Descarte</h3>
+                <p>Registros de IQF, descarte y días en proceso.</p>
+
+                <button class="btn-accion"
+                    onclick="location.href='{% url 'panel_admin_editar' 'iqf' 0 %}'">
+                    Abrir editor
+                </button>
+            </div>
+
+            <!-- 4️⃣ Usuarios -->
+            <div class="tarjeta">
+                <h3>Administrar Usuarios</h3>
+                <p>Roles, permisos y cuentas del sistema.</p>
+
+                <button class="btn-accion"
+                    onclick="location.href='{% url 'panel_admin_usuarios' %}'">
+                    Abrir gestión
+                </button>
+            </div>
+
+            <!-- 5️⃣ Auditoría (centrada) -->
+            <div class="tarjeta auditoria">
+                <h3>Auditoría del Sistema</h3>
+                <p>Registro de accesos y acciones realizadas por los usuarios.</p>
+
+                <button class="btn-accion"
+                    onclick="location.href='{% url 'panel_admin_actividad' %}'">
+                    Ver auditoría
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div style="text-align:center; margin-top:40px; opacity:0.8; font-size:14px;">
+    🫐 Sistema Packing de Arándanos — Panel Administrativo
+</div>

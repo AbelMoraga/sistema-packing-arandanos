@@ -97,7 +97,7 @@
       text-decoration: underline;
     }
 
-    /* Mensajes */
+    
     .alert {
       font-weight: 500;
       border-radius: 10px;
@@ -109,7 +109,7 @@
   <div class="main-box">
     <h2>📦 Pallets Registrados</h2>
 
-    <!-- Bloque de mensajes -->
+
     {% if messages %}
       <div class="container mb-3">
         {% for message in messages %}
@@ -140,7 +140,7 @@
           <td>{{ p.productor }}</td>
           <td>{{ p.variedad }}</td>
 
-          <!-- Enfriado -->
+         
           <td>
             <a href="{% url 'actualizar_estado' p.id %}?accion=enfriado"
                class="btn btn-sm {% if p.enfriado %}btn-success{% else %}btn-outline-secondary{% endif %} {% if p.bloqueado_recepcion %}disabled{% endif %}">
@@ -148,7 +148,7 @@
             </a>
           </td>
 
-          <!-- Fumigado -->
+        
           <td>
             {% if p.organico %}
               <span class="badge bg-secondary">No aplica</span>
@@ -160,7 +160,7 @@
             {% endif %}
           </td>
 
-          <!-- Preprocesos -->
+       
           <td>
             <a href="{% url 'actualizar_estado' p.id %}?accion=preprocesos"
                class="btn btn-sm {% if p.pre_procesos %}btn-success{% else %}btn-outline-secondary{% endif %} {% if p.bloqueado_recepcion %}disabled{% endif %}">
@@ -168,7 +168,7 @@
             </a>
           </td>
 
-          <!-- Acciones -->
+         
           <td>
             {% if p.bloqueado_recepcion %}
               <button class="btn btn-success btn-sm" disabled>✅ Guardado</button>

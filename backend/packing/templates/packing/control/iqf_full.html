@@ -1,0 +1,74 @@
+{% extends "packing/control/menu_control_base.html" %}
+
+{% block activo_iqf %}active{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">📋 Lista IQF / Descarte</h2>
+
+<form method="GET" class="row g-3 mb-3">
+    <div class="col-md-3">
+        <input type="text" name="buscar" class="form-control"
+               placeholder="Buscar ID o grupo"
+               value="{{ request.GET.buscar }}">
+    </div>
+
+    <div class="col-md-3">
+        <select name="estado" class="form-select">
+            <option value="">Estado</option>
+            <option value="EN_IQF">En IQF</option>
+            <option value="RETIRADO">Retirado</option>
+            <option value="DESPACHADO">Despachado</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <select name="variedad" class="form-select">
+            <option value="">Variedad</option>
+            {% for v in variedades %}
+                <option value="{{ v }}">{{ v }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <button class="btn btn-primary w-100">Filtrar</button>
+    </div>
+</form>
+
+<div class="card shadow-sm">
+    <table class="table table-hover text-center align-middle mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Grupo</th>
+                <th>Productor</th>
+                <th>Variedad</th>
+                <th>Días</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in iqf %}
+            <tr>
+                <td>{{ i.id }}</td>
+                <td>{{ i.grupo_proceso.id_grupo }}</td>
+                <td>{{ i.productor }}</td>
+                <td>{{ i.variedad }}</td>
+                <td>{{ i.dias_en_iqf }}</td>
+                <td>
+                    {% if i.estado == "EN_IQF" %}
+                        <span class="badge bg-info">En IQF</span>
+                    {% elif i.estado == "DESPACHADO" %}
+                        <span class="badge bg-success">Despachado</span>
+                    {% else %}
+                        <span class="badge bg-danger">Retirado</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

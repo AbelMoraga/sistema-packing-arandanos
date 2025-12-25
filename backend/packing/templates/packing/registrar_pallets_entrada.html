@@ -27,7 +27,6 @@
     justify-content: center;
   }
 
-  /* Arándano minimalista */
   .blueberry {
     width: 140px;
     height: 140px;
@@ -180,4 +179,40 @@
     <a href="{% url 'menu_frio' %}" class="btn-volver">⬅️ Volver al Menú de Frío</a>
   </div>
 </div>
+
+<!-- 🔵 NOTIFICACIÓN FORTNITE -->
+<div id="noti-fortnite" style="
+  position: fixed;
+  top: 20px;
+  right: -400px;
+  background: linear-gradient(90deg, #1e3cff, #0055ff);
+  color: white;
+  padding: 18px 25px;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  border: 3px solid #ffd800;
+  box-shadow: 0 0 12px rgba(0,0,0,0.35);
+  transition: right 0.5s ease;
+  z-index: 9999;
+">
+  ✅ Pallet registrado exitosamente
+</div>
+
+<script>
+  {% if success %}
+    const noti = document.getElementById("noti-fortnite");
+
+    // Mostrar
+    setTimeout(() => {
+      noti.style.right = "20px";
+    }, 100);
+
+    // Ocultar después de 3 segundos
+    setTimeout(() => {
+      noti.style.right = "-400px";
+    }, 3000);
+  {% endif %}
+</script>
+
 {% endblock %}

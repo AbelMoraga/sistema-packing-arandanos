@@ -1,0 +1,235 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>IQF y Descarte – Panel Administrativo</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #3A2EC8 0%, #4C3FE0 70%);
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+        }
+
+        .top-buttons {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 0 40px;
+        }
+
+        .btn-nav {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 999px;
+            border: none;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-nav:hover {
+            background: rgba(255,255,255,0.35);
+        }
+
+        .main-wrapper {
+            width: 85%;
+            max-width: 1300px;
+            margin: 120px auto;
+            background: rgba(255,255,255,0.13);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        /* --- Buscador --- */
+        .search-box {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin-bottom: 25px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-purple {
+            background:#4338ca;
+            color:white;
+            border:none;
+            padding:8px 16px;
+            border-radius:8px;
+        }
+
+        /* --- Tabla --- */
+        .table-wrapper {
+            background: white;
+            border-radius: 18px;
+            padding: 10px;
+            overflow-x: auto;
+        }
+
+        table.custom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: #4C3FE0;
+            color: white;
+        }
+
+        th {
+            padding: 12px 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        td {
+            padding: 12px 10px;
+            font-size: 14px;
+            color: #000 !important;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: #ffffff;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f4f4f4;
+        }
+
+        tbody tr:hover {
+            background: #e6e6ff;
+        }
+
+        .col-id {
+            width: 70px;
+            text-align: center;
+        }
+
+        .col-accion {
+            width: 110px;
+            text-align: center;
+        }
+
+        .btn-edit {
+            padding: 6px 16px;
+            border-radius: 999px;
+            background: #4C3FE0;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .btn-edit:hover {
+            background: #3729b6;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Botones de navegación -->
+<div class="top-buttons">
+    <a href="/panel-admin/" class="btn-nav">← Volver al menú</a>
+    <a href="{% url 'logout' %}" class="btn-nav">Cerrar sesión</a>
+</div>
+
+<div class="main-wrapper">
+
+    <h2>IQF y Descarte</h2>
+    <p>Selecciona un registro o utiliza el buscador por ID.</p>
+
+    <!-- BUSCADOR -->
+    <div class="search-box">
+        <form method="GET" class="search-row">
+            <input type="number"
+                   name="buscar"
+                   class="form-control"
+                   placeholder="Buscar por ID..."
+                   value="{{ buscar|default:'' }}">
+
+            <button class="btn-purple" type="submit">Buscar</button>
+
+            {% if buscar %}
+                <a href="/panel-admin/editar/iqf/0/" class="btn btn-secondary">
+                     todos
+                </a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- TABLA -->
+    <div class="table-wrapper">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th class="col-id">ID</th>
+                    <th>Grupo</th>
+                    <th>Productor</th>
+                    <th>Variedad</th>
+                    <th>Peso IQF (kg)</th>
+                    <th>Peso Descarte (kg)</th>
+                    <th>Estado</th>
+                    <th class="col-accion">Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for obj in objetos %}
+                    <tr>
+                        <td class="col-id">{{ obj.id }}</td>
+                        <td>{{ obj.grupo_proceso }}</td>
+                        <td>{{ obj.productor }}</td>
+                        <td>{{ obj.variedad }}</td>
+                        <td>{{ obj.peso_iqf }}</td>
+                        <td>{{ obj.peso_descarte }}</td>
+                        <td>
+                            {% if obj.estado == "EN_IQF" %}
+                                En IQF
+                            {% else %}
+                                Retirado
+                            {% endif %}
+                        </td>
+                        <td class="col-accion">
+                            <a href="{% url 'panel_admin_editar' 'iqf' obj.id %}" class="btn-edit">
+                                Editar
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8" style="text-align:center; padding:20px;">
+                            No hay registros de IQF y Descarte.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

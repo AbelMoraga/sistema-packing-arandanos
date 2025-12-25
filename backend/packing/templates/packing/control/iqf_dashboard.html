@@ -1,0 +1,81 @@
+{% extends "packing/control/menu_control_base.html" %}
+{% block activo_iqf %}active{% endblock %}
+{% block content %}
+
+<h2 class="mb-4">❄️ IQF y Descarte</h2>
+
+<!-- TARJETAS -->
+<div class="row text-center mb-4">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <h6 class="text-muted">En IQF</h6>
+            <h2 class="fw-bold text-primary">{{ pallets_iqf }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <h6 class="text-muted">Retirados</h6>
+            <h2 class="fw-bold text-danger">{{ retirados }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <h6 class="text-muted">Riesgo (+10 días)</h6>
+            <h2 class="fw-bold text-warning">{{ riesgo }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<!-- TABLA RESUMEN -->
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h4 class="mb-3">Últimos registros</h4>
+
+        <table class="table table-hover text-center align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Grupo</th>
+                    <th>Productor</th>
+                    <th>Variedad</th>
+                    <th>Días</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in iqf_recent %}
+                <tr>
+                    <td>{{ i.id }}</td>
+                    <td>{{ i.grupo_proceso.id_grupo }}</td>
+                    <td>{{ i.productor }}</td>
+                    <td>{{ i.variedad }}</td>
+                    <td>{{ i.dias_en_iqf }}</td>
+                    <td>
+                        {% if i.estado == "EN_IQF" %}
+                            <span class="badge bg-info">En IQF</span>
+                        {% elif i.estado == "DESPACHADO" %}
+                            <span class="badge bg-success">Despachado</span>
+                        {% else %}
+                            <span class="badge bg-danger">Retirado</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-center mt-3">
+            <a href="{% url 'control_iqf_lista' %}" class="btn btn-outline-primary">
+    Ver lista completa →
+</a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

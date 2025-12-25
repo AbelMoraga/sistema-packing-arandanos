@@ -1,0 +1,151 @@
+{% load static %}
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #3A2EC8 0%, #4C3FE0 70%);
+    font-family: 'Poppins', sans-serif;
+    color: white;
+}
+
+/* Botones superiores */
+.btn-volver {
+    position: absolute;
+    top: 25px;
+    right: 180px;
+    background: #4A32D4;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.15s;
+}
+.btn-volver:hover { background: #3826a6; }
+
+.btn-logout {
+    position: absolute;
+    top: 25px;
+    right: 40px;
+    background: #4A32D4;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.15s;
+}
+.btn-logout:hover { background: #3826a6; }
+
+/* Contenedor glass */
+.panel-wrapper {
+    width: 90%;
+    max-width: 600px;
+    margin: 120px auto;
+    background: rgba(255,255,255,0.12);
+    border-radius: 25px;
+    padding: 40px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0px 10px 35px rgba(0,0,0,0.25);
+}
+
+/* Título */
+.titulo {
+    font-size: 34px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Card interna */
+.card-form {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    color: #333;
+}
+
+/* Inputs */
+.card-form label {
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+.card-form input,
+.card-form select {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.card-form input:focus,
+.card-form select:focus {
+    outline: none;
+    border-color: #4A32D4;
+    box-shadow: 0 0 0 2px rgba(74,50,212,0.2);
+}
+
+/* Botón guardar */
+.btn-guardar {
+    width: 100%;
+    background: #4A32D4;
+    color: white;
+    border-radius: 12px;
+    padding: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.15s;
+}
+.btn-guardar:hover {
+    background: #3826a6;
+}
+</style>
+
+<!-- BOTONES SUPERIORES -->
+<a href="{% url 'panel_admin_usuarios' %}" class="btn-volver">
+    ⬅️ Volver
+</a>
+
+<a href="{% url 'logout' %}" class="btn-logout">
+    Cerrar sesión
+</a>
+
+<!-- CONTENIDO -->
+<div class="panel-wrapper">
+
+    <div class="titulo">➕ Crear Usuario</div>
+
+    <div class="card-form">
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Usuario</label>
+            <input type="text" name="username" placeholder="Nombre de usuario" required>
+
+            <label>Correo</label>
+            <input type="email" name="correo" placeholder="correo@ejemplo.com" required>
+
+            <label>Contraseña</label>
+            <input type="password" name="password" placeholder="Contraseña segura" required>
+
+            <label>Grupo</label>
+            <select name="grupo">
+                <option value="">— Sin grupo —</option>
+                {% for g in grupos %}
+                <option value="{{ g.id }}">{{ g.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn-guardar">
+                💾 Guardar Usuario
+            </button>
+        </form>
+    </div>
+
+</div>

@@ -1,0 +1,43 @@
+<div class="fadeIn">
+
+    <h2 class="mb-4">📤 Exportar datos</h2>
+
+    <p class="text-muted">Selecciona qué información deseas exportar:</p>
+
+    <div class="list-group">
+
+        
+        <a href="{% url 'exportar_pallets_terminados_excel' %}" class="list-group-item list-group-item-action">
+            📦 Exportar Pallets Terminados (Excel)
+        </a>
+
+       
+        <a href="{% url 'exportar_iqf_excel' %}" class="list-group-item list-group-item-action">
+            🧊 Exportar IQF y Descarte (Excel)
+        </a>
+
+        
+        <a href="{% url 'exportar_procesos_csv' %}" class="list-group-item list-group-item-action">
+            🏭 Exportar Procesos (CSV)
+        </a>
+
+        
+        <a href="{% url 'exportar_recepcion_excel' %}" class="list-group-item list-group-item-action">
+            📥 Exportar Recepción de Pallets (Excel)
+        </a>
+
+        
+
+    </div>
+
+</div>
+
+<style>
+    .fadeIn {
+        animation: fadein 0.2s ease-in-out;
+    }
+    @keyframes fadein {
+        from { opacity:0; transform: translateY(4px); }
+        to   { opacity:1; transform: translateY(0); }
+    }
+</style>

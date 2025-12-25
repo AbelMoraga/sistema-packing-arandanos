@@ -1,0 +1,45 @@
+
+<div style="position:absolute; top:20px; right:30px; display:flex; gap:10px;">
+    <a href="{% url 'menu_control' %}" class="btn btn-secondary">
+        ⬅️ Volver al Control
+    </a>
+
+    <a href="{% url 'logout' %}" class="btn btn-danger">
+        Cerrar sesión
+    </a>
+</div>
+<h2 style="color:white; margin-bottom:20px;">Gestión de Usuarios</h2>
+
+<a href="{% url 'panel_admin_crear_usuario' %}" class="btn btn-primary">➕ Crear Usuario</a>
+<br><br>
+
+<table class="table table-striped bg-white">
+    <tr>
+        <th>Usuario</th>
+        <th>Grupo</th>
+        <th></th>
+    </tr>
+
+    {% for u in usuarios %}
+    <tr>
+        <td>{{ u.username }}</td>
+
+        <td>
+            {% if u.groups.first %}
+                {{ u.groups.first.name }}
+            {% else %}
+                <i>Sin grupo</i>
+            {% endif %}
+        </td>
+
+        <td>
+            {% if not u.is_superuser %}
+            <a href="{% url 'panel_admin_eliminar_usuario' u.id %}"
+               class="btn btn-danger btn-sm">
+               🗑 Eliminar
+            </a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>

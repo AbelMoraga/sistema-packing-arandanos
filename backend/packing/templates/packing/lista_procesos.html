@@ -21,6 +21,7 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       padding: 40px;
       margin-top: 50px;
+      position: relative;
     }
 
     h2 {
@@ -37,60 +38,66 @@
     .btn-dark {
       background-color: #372AAC;
       border: none;
-      transition: 0.3s;
     }
 
     .btn-dark:hover {
       background-color: #2E25A0;
-      transform: translateY(-2px);
     }
 
     .btn-secondary {
       background-color: #4B3EDB;
       border: none;
       color: white;
-      font-weight: 500;
-      transition: 0.3s;
     }
 
     .btn-secondary:hover {
       background-color: #372AAC;
-      transform: translateY(-2px);
-    }
-
-    tr.table-secondary {
-      transition: background-color 0.6s ease, transform 0.3s ease;
-    }
-
-    tr.table-secondary td {
-      opacity: 0.9;
-    }
-
-    .volver {
-      display: inline-block;
-      margin-top: 20px;
-      text-decoration: none;
     }
   </style>
 </head>
 
 <body>
+
+  <!-- 🔵 VOLVER -->
+  <div style="position:absolute; top:20px; right:30px;">
+    <a href="{% url 'menu_procesos' %}" class="btn btn-secondary">
+      ⬅️ Volver al Menú
+    </a>
+  </div>
+
   <div class="container">
+
     <h2 class="text-center mb-4">⚙️ Pallets en Preprocesos</h2>
 
-    <!-- Bloque de mensajes -->
     {% if messages %}
-      <div class="container mb-3">
-        {% for message in messages %}
-          <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
+      {% for message in messages %}
+        <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
     {% endif %}
 
+    <!-- 🔍 BUSCADOR (GET) — FUERA DEL FORM POST -->
+    <div class="d-flex justify-content-end mb-3">
+      <form method="GET" action="" class="d-flex">
+        <input type="text" name="buscar_id" class="form-control me-2"
+               placeholder="Buscar por ID..."
+               value="{{ request.GET.buscar_id }}"
+               style="width:200px;">
+        <button class="btn btn-dark me-2" type="submit">Buscar</button>
+        <a href="{% url 'lista_procesos' %}" class="btn btn-outline-secondary">Ver todos</a>
+      </form>
+    </div>
+
+    <!-- 🔥 FORM POST ÚNICO -->
     <form method="POST" action="{% url 'crear_grupo_proceso' %}">
       {% csrf_token %}
+
+      <div class="mb-3">
+        <button type="submit" class="btn btn-dark">
+          🧩 Crear grupo con seleccionados
+        </button>
+      </div>
 
       <table class="table table-bordered table-hover align-middle shadow-sm">
         <thead class="text-center">
@@ -108,12 +115,18 @@
         <tbody>
           {% for p in pallets %}
           <tr class="text-center {% if p.bloqueado_proceso %}table-secondary{% endif %}">
+
             <td>
-              <input type="checkbox" name="pallets_seleccionados" value="{{ p.id }}" {% if p.bloqueado_proceso %}disabled{% endif %}>
+              <input type="checkbox"
+                     name="pallets_seleccionados"
+                     value="{{ p.id }}"
+                     {% if p.bloqueado_proceso %}disabled{% endif %}>
             </td>
+
             <td>{{ p.id }}</td>
             <td>{{ p.productor }}</td>
             <td>{{ p.variedad }}</td>
+
             <td>
               {% if p.grupo %}
                 <span class="badge bg-dark">Grupo {{ p.grupo.id_grupo }}</span>
@@ -122,43 +135,40 @@
               {% endif %}
             </td>
 
-            <!-- Procesado -->
             <td>
               <a href="{% url 'actualizar_estado' p.id %}?accion=procesado&origen=procesos"
-                class="btn btn-sm {% if p.procesado %}btn-success{% else %}btn-outline-secondary{% endif %} {% if p.bloqueado_proceso %}disabled{% endif %}">
+                 class="btn btn-sm {% if p.procesado %}btn-success{% else %}btn-outline-secondary{% endif %}
+                 {% if p.bloqueado_proceso %}disabled{% endif %}">
                 {% if p.procesado %}✔{% else %}✖{% endif %}
               </a>
             </td>
 
-            <!-- Guardar -->
             <td>
               {% if p.bloqueado_proceso %}
                 <button class="btn btn-success btn-sm" disabled>✅ Guardado</button>
               {% else %}
                 <a href="{% url 'actualizar_estado' p.id %}?accion=guardar_proceso&origen=procesos"
-                  class="btn btn-outline-primary btn-sm {% if not p.procesado %}disabled{% endif %}">
+                   class="btn btn-outline-primary btn-sm {% if not p.procesado %}disabled{% endif %}">
                   💾 Guardar
                 </a>
               {% endif %}
             </td>
+
           </tr>
           {% empty %}
           <tr>
-            <td colspan="7" class="text-center text-muted">No hay pallets pendientes de proceso.</td>
+            <td colspan="7" class="text-center text-muted">
+              No hay pallets pendientes de proceso.
+            </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
 
-      <div class="text-center mt-4">
-        <button type="submit" class="btn btn-dark">🧩 Crear grupo con seleccionados</button>
-      </div>
     </form>
 
-    <div class="text-center mt-4">
-      <a href="{% url 'menu_procesos' %}" class="btn btn-secondary volver">⬅️ Volver al Menú de Procesos</a>
-    </div>
   </div>
+
 </body>
 </html>
 {% endblock %}

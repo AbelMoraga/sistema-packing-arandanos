@@ -1,142 +1,126 @@
-<div class="panel fadeIn">
+{% extends "packing/control/menu_control_base.html" %}
 
-    <h2>📊 Reportes Generales</h2>
+{% block activo_reportes %}active{% endblock %}
 
-    <!-- FILTRO -->
-    <form id="filtroFechas" method="GET" class="filtros">
-        <div>
-            <label>Desde:</label>
-            <input type="date" name="fecha_inicio" value="{{ request.GET.fecha_inicio }}">
+{% block content %}
+
+<h2 class="mb-4">📊 Reportes Generales</h2>
+
+<!-- ================== TARJETAS ================== -->
+<div class="row mb-4 text-center">
+
+    <div class="col-md-2">
+        <div class="card p-3 shadow-sm">
+            <h6 class="text-muted">Pallets recibidos</h6>
+            <h3 class="fw-bold">{{ total_pallets }}</h3>
         </div>
-
-        <div>
-            <label>Hasta:</label>
-            <input type="date" name="fecha_fin" value="{{ request.GET.fecha_fin }}">
-        </div>
-
-        <button class="btn-filtrar">Aplicar filtro</button>
-    </form>
-
-    <!-- RESUMEN -->
-    <div class="cards">
-        <div class="card">📥 Pallets recibidos: <b>{{ total_pallets }}</b></div>
-        <div class="card">⚙️ Procesados: <b>{{ total_procesados }}</b></div>
-        <div class="card">🧺 Grupos: <b>{{ total_grupos }}</b></div>
-        <div class="card">📦 Terminados: <b>{{ total_terminados }}</b></div>
-        <div class="card">❄️ Total IQF: <b>{{ total_iqf }} kg</b></div>
-        <div class="card">🗑️ Descarte: <b>{{ total_descarte }} kg</b></div>
     </div>
 
-    <hr>
-
-    <h3>Calidad de pallets terminados</h3>
-
-    <div class="graf-container">
-        <canvas id="grafCalidad"
-            data-labels='[
-                {% for c in calidad_terminados %}
-                    "{{ c.calidad }}",
-                {% endfor %}
-            ]'
-            data-values='[
-                {% for c in calidad_terminados %}
-                    {{ c.total }},
-                {% endfor %}
-            ]'>
-        </canvas>
+    <div class="col-md-2">
+        <div class="card p-3 shadow-sm">
+            <h6 class="text-muted">Procesados</h6>
+            <h3 class="fw-bold">{{ total_procesados }}</h3>
+        </div>
     </div>
 
-    <hr>
+    <div class="col-md-2">
+        <div class="card p-3 shadow-sm">
+            <h6 class="text-muted">Terminados</h6>
+            <h3 class="fw-bold">{{ total_terminados }}</h3>
+        </div>
+    </div>
 
-    <h3>Resumen por productor</h3>
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm">
+            <h6 class="text-muted">Total IQF (kg)</h6>
+            <h3 class="fw-bold">{{ total_iqf|floatformat:1 }}</h3>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Productor</th>
-                <th>Total Pallets</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in pallets_por_productor %}
-            <tr>
-                <td>{{ item.productor__nombre }}</td>
-                <td>{{ item.total }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="2" class="text-center text-muted py-3">Sin datos en este rango</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm">
+            <h6 class="text-muted">Descarte (kg)</h6>
+            <h3 class="fw-bold">{{ total_descarte|floatformat:1 }}</h3>
+        </div>
+    </div>
 
 </div>
 
+<hr>
 
-<style>
-.panel { padding: 25px; animation: fade .25s ease; }
+<!-- ================== GRÁFICO ================== -->
+<h4 class="mb-3">📦 Calidad de pallets terminados</h4>
 
-@keyframes fade {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: none; }
-}
+<div class="d-flex justify-content-center my-4">
+    <div style="max-width: 420px;">
+        <canvas id="grafCalidad"></canvas>
+    </div>
+</div>
 
-.filtros {
-    display: flex;
-    gap: 15px;
-    align-items: flex-end;
-    margin-bottom: 20px;
-}
+<hr>
 
-.filtros label {
-    font-size: 14px;
-    color: #333;
-}
+<!-- ================== TABLA ================== -->
+<h4 class="mb-3">👨‍🌾 Pallets por productor</h4>
 
-.filtros input {
-    padding: 7px 10px;
-    border-radius: 8px;
-    border: 1px solid #bbb;
-}
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>Productor</th>
+            <th>Total pallets</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in pallets_por_productor %}
+        <tr>
+            <td>{{ p.productor__nombre }}</td>
+            <td>{{ p.total }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2" class="text-center text-muted">Sin datos</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-.btn-filtrar {
-    padding: 8px 15px;
-    background: #4b3edb;
-    border: none;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-}
-.btn-filtrar:hover { background: #372aac; }
+<!-- ================== SCRIPT ================== -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-.cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
+<script>
+const ctx = document.getElementById("grafCalidad");
 
-.card {
-    background: #f5f5ff;
-    padding: 15px;
-    border-radius: 12px;
-    font-size: 16px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+new Chart(ctx, {
+    type: "doughnut",
+    data: {
+        labels: [
+            {% for c in calidad_terminados %}
+                "{{ c.calidad }}"{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ],
+        datasets: [{
+            data: [
+                {% for c in calidad_terminados %}
+                    {{ c.total }}{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ],
+            backgroundColor: [
+                "#0d6efd", // Excelente → azul
+                "#198754", // Buena → verde
+                "#ffc107", // Baja → amarillo
+                "#dc3545"  // Otra → rojo
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "bottom"
+            }
+        }
+    }
+});
+</script>
 
-.graf-container {
-    width: 100%;
-    height: 300px;
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-.table th, .table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-.table th { background: #e6e6ff; }
-</style>
+{% endblock %}

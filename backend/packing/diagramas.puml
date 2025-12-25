@@ -1,0 +1,11 @@
+@startuml
+actor Recepcion
+actor Procesos
+actor Control
+actor Administrador
+
+Recepcion --> (Registrar Pallet)
+Procesos --> (Registrar Ingreso IQF)
+Control --> (Marcar Pallet Terminado)
+Administrador --> (Gestionar Usuarios)
+@enduml

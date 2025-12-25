@@ -1,0 +1,45 @@
+<div class="fadeIn">
+
+    <h2 class="mb-4">📄 Detalles del Registro IQF</h2>
+
+    <div class="card p-4 shadow-sm" style="border-radius: 15px;">
+
+        <h4><b>Grupo:</b> {{ i.grupo_proceso.id_grupo }}</h4>
+        <hr>
+
+        <p><b>Productor:</b> {{ i.productor }}</p>
+        <p><b>Variedad:</b> {{ i.variedad }}</p>
+
+        <p><b>Peso IQF:</b> {{ i.peso_iqf }} kg</p>
+        <p><b>Peso Descarte:</b> {{ i.peso_descarte }} kg</p>
+
+        <p><b>Estado:</b>
+            {% if i.estado == "EN_IQF" %}
+                <span class="badge bg-info text-dark">En IQF</span>
+            {% else %}
+                <span class="badge bg-success">Retirado</span>
+            {% endif %}
+        </p>
+
+        <p><b>Días en IQF:</b> {{ i.dias_en_iqf }}</p>
+
+        <p><b>Ingreso:</b> {{ i.fecha_ingreso|date:"d-m-Y H:i" }}</p>
+
+        <p><b>Retiro:</b>
+            {% if i.fecha_retiro %}
+                {{ i.fecha_retiro|date:"d-m-Y H:i" }}
+            {% else %}
+                —
+            {% endif %}
+        </p>
+
+        <hr>
+
+        <button class="btn btn-dark"
+                onclick="loadSection(event, '{% url 'lista_iqf_full' %}')">
+            ⬅ Volver
+        </button>
+
+    </div>
+
+</div>

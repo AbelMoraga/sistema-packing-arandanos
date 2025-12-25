@@ -2,11 +2,11 @@
 
     <h2>📊 Reportes Generales</h2>
 
-    <!-- Tarjetas resumen -->
+   
     <div class="cards">
         <div class="card">📥 <b>Pallets recibidos:</b> {{ total_pallets }}</div>
         <div class="card">⚙️ <b>Procesados:</b> {{ total_procesados }}</div>
-        <div class="card">🧺 <b>Grupos:</b> {{ total_grupos }}</div>
+        <div class="card">🧺 <b>Pallets IQF:</b> {{ total_grupos }}</div>
         <div class="card">📦 <b>Terminados:</b> {{ total_terminados }}</div>
         <div class="card">❄️ <b>Total IQF:</b> {{ total_iqf }} kg</div>
         <div class="card">🗑️ <b>Descarte:</b> {{ total_descarte }} kg</div>
@@ -14,7 +14,7 @@
 
     <hr>
 
-    <!-- Gráfico -->
+   
     <h3>Calidad de pallets terminados</h3>
 
     <div class="graf-container">
@@ -26,7 +26,7 @@
 
     <hr>
 
-    <!-- Tabla productor -->
+   
     <h3>Resumen por productor</h3>
 
     <table class="table table-bordered table-striped">
@@ -55,6 +55,20 @@
 
 <style>
 
+
+.graf-container {
+    width: 100%;
+    max-width: 600px;     /* ancho máximo */
+    height: 350px;        /* altura fija */
+    margin: 0 auto 25px;  /* centrado */
+}
+
+#grafCalidad {
+    width: 100% !important;
+    height: 100% !important;
+}
+/* ya tu sae*/
+
 .panel {
     padding: 20px;
 }
@@ -74,17 +88,7 @@
     border: 1px solid #eee;
 }
 
-.graf-container {
-    width: 100%;
-    max-width: 600px;           /* evita que sea enorme */
-    height: 300px;              /* alto fijo */
-    margin: 0 auto 25px auto;   /* centrado */
-}
 
-#grafCalidad {
-    width: 100% !important;
-    height: 100% !important;
-}
 
 .table {
     background: white;

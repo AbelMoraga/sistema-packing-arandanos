@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.decorators import user_passes_test
 from .models import (
     Productor, Variedad, TipoEnvase, Pallet,
     Distribuidor, TipoPocillo, Linea,
@@ -56,3 +57,12 @@ class IQFDescarteAdmin(admin.ModelAdmin):
 class GrupoProcesoAdmin(admin.ModelAdmin):
     list_display = ('id_grupo', 'productor', 'variedad', 'fecha_creacion')
     search_fields = ('id_grupo', 'productor__nombre')
+#adm
+
+
+def es_admin_local(user):
+    return user.groups.filter(name="admin_local").exists() or user.is_superuser
+
+@user_passes_test(es_admin_local)
+def panel_admin(request):
+    return render(request, "packing/admin/panel_admin.html")

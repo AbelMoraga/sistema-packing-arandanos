@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pallets de Recepción – Panel Administrativo</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        :root {
+            --bg-main: #3f3dff;
+            --bg-diagonal: #5b58ff;
+            --accent-soft: #ebe9ff;
+            --accent: #4338ca;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg,
+                var(--bg-main) 0%,
+                var(--bg-main) 55%,
+                var(--bg-diagonal) 55%,
+                var(--bg-diagonal) 100%);
+            color: white;
+        }
+
+        .content-wrapper {
+            width: 90%;
+            max-width: 1250px;
+            margin: auto;
+            padding-top: 30px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .logout-btn {
+            background: rgba(19, 17, 77, 0.9);
+            color: white;
+            padding: 9px 20px;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .logout-btn:hover {
+            background: #ff4b81;
+        }
+
+        .main-card {
+            background: rgba(0,0,0,0.18);
+            border-radius: 26px;
+            padding: 26px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+        }
+
+        .table-wrapper {
+            margin-top: 18px;
+            background: white;
+            border-radius: 18px;
+            padding: 8px 0;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            align-items: center;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        .btn-purple {
+            background:#4338ca;
+            color:white;
+            border:none;
+            padding:8px 16px;
+            border-radius:8px;
+        }
+
+        /* 🔥 Corrección: centrar el botón "Mostrar todos" */
+        .show-all-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .show-all-btn {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="content-wrapper">
+
+    <div class="top-bar">
+        <h1>Panel Administrativo</h1>
+        <div>
+            <a href="/panel-admin/" class="logout-btn" style="margin-right:10px;">Volver al menú</a>
+            <a href="{% url 'logout' %}" class="logout-btn">Cerrar sesión</a>
+        </div>
+    </div>
+
+    <div class="main-card">
+
+        <h3>Pallets de Recepción</h3>
+        <p>Selecciona un pallet o utiliza el buscador por ID o código.</p>
+
+        <!-- 🔍 BUSCADOR -->
+        <form method="GET" class="search-box">
+
+            <input type="text" name="buscar" class="form-control"
+                   placeholder="Buscar por ID o Código..." value="{{ request.GET.buscar }}">
+
+            <button class="btn-purple">Buscar</button>
+
+            {% if request.GET.buscar %}
+            <div class="show-all-wrapper">
+                <a href="/panel-admin/editar/pallet/0/" class="btn btn-secondary show-all-btn">Mostrar todos</a>
+            </div>
+            {% endif %}
+        </form>
+
+        <div class="table-wrapper">
+            <table class="table custom-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Código</th>
+                        <th>Detalles</th>
+                        <th style="text-align:right;">Acción</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for obj in objetos %}
+                    <tr>
+                        <td>{{ obj.id }}</td>
+                        <td>{{ obj.codigo }}</td>
+
+                        <td>
+                            <strong>{{ obj.productor }}</strong><br>
+                            Variedad: {{ obj.variedad }}<br>
+                            Envase: {{ obj.tipo_envase }}<br>
+                            Cajas: {{ obj.cantidad_cajas }}
+                        </td>
+
+                        <td style="text-align:right;">
+                            <a href="{% url 'panel_admin_editar' 'pallet' obj.id %}" class="btn-purple">
+                                Editar
+                            </a>
+                        </td>
+                    </tr>
+
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-3 text-muted">
+                            No se encontraron pallets.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+{% extends "packing/menu_control.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="fadeIn">
+    
+    <h2 class="mb-4">📄 Detalles del Registro IQF</h2>
+
+    <div class="card p-4 shadow-sm" style="border-radius: 15px;">
+
+        <h4><b>Grupo:</b> {{ i.grupo_proceso.id_grupo }}</h4>
+        <hr>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <p><b>Productor:</b> {{ i.productor }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><b>Variedad:</b> {{ i.variedad }}</p>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <p><b>Peso IQF:</b> {{ i.peso_iqf }} kg</p>
+            </div>
+            <div class="col-md-6">
+                <p><b>Peso Descarte:</b> {{ i.peso_descarte }} kg</p>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <p>
+                    <b>Estado:</b> 
+                    {% if i.estado == "EN_IQF" %}
+                        <span class="badge bg-info text-dark">En IQF</span>
+                    {% else %}
+                        <span class="badge bg-success">Retirado</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <p><b>Días en IQF:</b> {{ i.dias_en_iqf }}</p>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <p><b>Fecha ingreso:</b> {{ i.fecha_ingreso|date:"d-m-Y H:i" }}</p>
+            </div>
+            <div class="col-md-6">
+                {% if i.fecha_retiro %}
+                    <p><b>Fecha retiro:</b> {{ i.fecha_retiro|date:"d-m-Y H:i" }}</p>
+                {% else %}
+                    <p><b>Fecha retiro:</b> —</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <hr>
+
+        <a href="{% url 'lista_iqf_full' %}" class="btn btn-dark mt-2">⬅ Volver a la lista</a>
+
+    </div>
+
+</div>
+
+<style>
+    .fadeIn {
+        animation: fadein 0.4s ease-in-out;
+    }
+    @keyframes fadein {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+{% endblock %}

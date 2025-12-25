@@ -1,0 +1,215 @@
+{% load static %}
+
+<style>
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #3A2EC8 0%, #4C3FE0 70%);
+    font-family: 'Poppins', sans-serif;
+    color: white;
+}
+
+/* Botón volver al control */
+.btn-volver {
+    position: absolute;
+    top: 25px;
+    right: 180px; /* a la izquierda del cerrar sesión */
+    background: #4A32D4;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.15s;
+}
+.btn-volver:hover {
+    background: #3826a6;
+}
+
+/* Botón cerrar sesión */
+.btn-logout {
+    position: absolute;
+    top: 25px;
+    right: 40px;
+    background: #4A32D4;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.15s;
+}
+.btn-logout:hover {
+    background: #3826a6;
+}
+
+/* Contenedor central */
+.panel-wrapper {
+    width: 90%;
+    max-width: 1300px;
+    margin: 120px auto;
+    background: rgba(255,255,255,0.12);
+    border-radius: 25px;
+    padding: 35px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0px 10px 35px rgba(0,0,0,0.25);
+}
+
+/* Fila título + botón */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* Título */
+.titulo {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+/* Botón crear */
+.btn-crear {
+    background: #4A32D4;
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.15s;
+}
+.btn-crear:hover {
+    background: #3826a6;
+}
+
+/* Tabla */
+.table-container {
+    overflow-x: auto;
+}
+
+.tabla-usuarios {
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    color: #333;
+    box-shadow: 0px 3px 10px rgba(0,0,0,0.20);
+}
+
+.tabla-usuarios th {
+    background: #ececff;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.tabla-usuarios td {
+    padding: 12px;
+}
+
+/* Chips de grupo */
+.chip {
+    padding: 5px 12px;
+    border-radius: 8px;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+}
+.chip-frio       { background: #2196F3; }
+.chip-procesos   { background: #4CAF50; }
+.chip-control    { background: #FF9800; }
+.chip-admin      { background: #673AB7; }
+
+/* Botones */
+.btn-accion {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.btn-edit { background: #4A32D4; }
+.btn-edit:hover { background: #3724a0; }
+
+.btn-delete { background: #e53935; }
+.btn-delete:hover { background: #b71c1c; }
+
+</style>
+
+<!-- BOTÓN VOLVER AL CONTROL -->
+<a href="{% url 'panel_admin' %}" class="btn-volver">
+    ⬅️ Volver al Control
+</a>
+
+<!-- BOTÓN CERRAR SESIÓN -->
+<a href="{% url 'logout' %}" class="btn-logout">
+    Cerrar sesión
+</a>
+
+<div class="panel-wrapper">
+
+    <!-- TÍTULO + BOTÓN -->
+    <div class="header-row">
+        <div class="titulo">👥 Gestión de Usuarios</div>
+
+        <a href="{% url 'panel_admin_crear_usuario' %}" class="btn-crear">
+            ➕ Crear Usuario
+        </a>
+    </div>
+
+    <div class="table-container">
+        <table class="tabla-usuarios">
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Correo</th>
+                <th>Grupo</th>
+                <th style="text-align:center;">Acciones</th>
+            </tr>
+
+            {% for u in usuarios %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.email }}</td>
+
+                <td>
+                    {% if u.groups.first %}
+                        {% if u.groups.first.name == "Frio" %}
+                            <span class="chip chip-frio">Frio</span>
+                        {% elif u.groups.first.name == "Procesos" %}
+                            <span class="chip chip-procesos">Procesos</span>
+                        {% elif u.groups.first.name == "Control" %}
+                            <span class="chip chip-control">Control</span>
+                        {% elif u.groups.first.name == "admin_local" %}
+                            <span class="chip chip-admin">Admin_local</span>
+                        {% endif %}
+                    {% else %}
+                        <i>No asignado</i>
+                    {% endif %}
+                </td>
+
+                <td style="text-align:center;">
+                    <button class="btn-accion btn-edit"
+                        onclick="location.href='{% url 'panel_admin_editar_usuario' u.id %}'">
+                        ✏ Editar
+                    </button>
+
+                    {% if not u.is_superuser %}
+                    <button class="btn-accion btn-delete"
+                        onclick="if(confirm('¿Eliminar este usuario?')) location.href='{% url 'panel_admin_eliminar_usuario' u.id %}'">
+                        🗑 Eliminar
+                    </button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>

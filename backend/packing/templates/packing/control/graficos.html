@@ -1,4 +1,171 @@
-<div class="fadeIn">
-  <h4 class="mb-3">📊 Gráficos de Pallets</h4>
-  <p class="text-muted">Pronto: gráficos interactivos.</p>
+{% extends "packing/control/menu_control_base.html" %}
+
+{% block content %}
+
+<style>
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.kpi {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+
+.kpi h3 {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.kpi p {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 6px 0 0;
+}
+
+.kpi.total { border-left: 6px solid #4B3EDB; }
+.kpi.ok { border-left: 6px solid #4CAF50; }
+.kpi.warn { border-left: 6px solid #FFC107; }
+.kpi.info { border-left: 6px solid #2196F3; }
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    margin-bottom: 25px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.filtros {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.filtros input, .filtros button {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.filtros button {
+    background: #4B3EDB;
+    color: white;
+    font-weight: 600;
+    border: none;
+}
+</style>
+
+<h2 class="mb-3">📊 Dashboard de pallets</h2>
+
+<!-- ================= FILTROS ================= -->
+<div class="card">
+    <form method="get" class="filtros">
+        <input type="date" name="fecha_inicio" value="{{ fecha_inicio }}">
+        <input type="date" name="fecha_fin" value="{{ fecha_fin }}">
+        <button type="submit">Aplicar filtros</button>
+    </form>
 </div>
+
+<!-- ================= KPIs ================= -->
+<div class="dashboard-grid">
+    <div class="kpi total">
+        <h3>Total pallets</h3>
+        <p>{{ estados.procesados|add:estados.no_procesados }}</p>
+    </div>
+
+    <div class="kpi ok">
+        <h3>Procesados</h3>
+        <p>{{ estados.procesados }}</p>
+    </div>
+
+    <div class="kpi warn">
+        <h3>No procesados</h3>
+        <p>{{ estados.no_procesados }}</p>
+    </div>
+
+    <div class="kpi info">
+        <h3>Pallets enviados</h3>
+        <p>{{ estados.enviados }}</p>
+    </div>
+</div>
+
+<!-- ================= GRÁFICOS ================= -->
+<div class="grid-2">
+    <div class="card">
+        <h5>📈 Pallets por día</h5>
+        <canvas id="graficoDia"></canvas>
+    </div>
+
+    <div class="card">
+        <h5>📊 Pallets por productor</h5>
+        <canvas id="graficoProductor"></canvas>
+    </div>
+</div>
+
+<div class="card">
+    <h5>🍩 Estado de pallets</h5>
+    <canvas id="graficoEstado" style="max-width: 420px; margin:auto;"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+/* 📈 Pallets por día */
+new Chart(document.getElementById("graficoDia"), {
+    type: "line",
+    data: {
+        labels: [{% for p in pallets_por_dia %}"{{ p.dia }}",{% endfor %}],
+        datasets: [{
+            label: "Pallets",
+            data: [{% for p in pallets_por_dia %}{{ p.total }},{% endfor %}],
+            borderColor: "#4B3EDB",
+            tension: .4,
+            fill: false
+        }]
+    }
+});
+
+/* 📊 Pallets por productor */
+new Chart(document.getElementById("graficoProductor"), {
+    type: "bar",
+    data: {
+        labels: [{% for p in pallets_por_productor %}"{{ p.productor__nombre }}",{% endfor %}],
+        datasets: [{
+            label: "Pallets",
+            data: [{% for p in pallets_por_productor %}{{ p.total }},{% endfor %}],
+            backgroundColor: "#6C63FF"
+        }]
+    }
+});
+
+/* 🍩 Estado de pallets */
+new Chart(document.getElementById("graficoEstado"), {
+    type: "doughnut",
+    data: {
+        labels: ["Procesados", "No procesados", "Pallets enviados"],
+        datasets: [{
+            data: [
+                {{ estados.procesados }},
+                {{ estados.no_procesados }},
+                {{ estados.enviados }}
+            ],
+            backgroundColor: ["#4CAF50", "#FFC107", "#2196F3"]
+        }]
+    }
+});
+</script>
+
+{% endblock %}

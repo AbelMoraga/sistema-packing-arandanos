@@ -1,0 +1,23 @@
+{% extends "packing/admin/base_admin.html" %}
+{% block content %}
+
+<h3 class="mb-4">✏ Editar {{ modelo }} #{{ obj.id }}</h3>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="row">
+        {% for campo, valor in obj.__dict__.items %}
+            {% if campo != '_state' %}
+            <div class="col-md-4 mb-3">
+                <label class="form-label">{{ campo }}</label>
+                <input type="text" name="{{ campo }}" value="{{ valor }}" class="form-control">
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <button class="btn btn-success">Guardar cambios</button>
+</form>
+
+{% endblock %}

@@ -121,7 +121,7 @@
 
             <a href="{% url 'control_graficos' %}"
                class="menu-item {% block activo_graficos %}{% endblock %}">
-                📊 Dashboard de pallets
+                📊 Gráficos de pallets
             </a>
 
             <a href="{% url 'iqf_dashboard' %}"
@@ -129,14 +129,16 @@
                 🧾 IQF y Descarte
             </a>
 
-            <a href="{% url 'control_pallets_terminados' %}" class="menu-item {% block activo_terminados %}{% endblock %}">
-    📦 Pallets terminados
-</a>
+            <a href="{% url 'control_pallets_terminados' %}"
+               class="menu-item {% block activo_terminados %}{% endblock %}">
+                📦 Pallets terminados
+            </a>
 
-
-            <a href="{% url 'control_exportar' %}" class="menu-item">
-    📤 Exportar datos
-</a>
+            <a href="{% url 'control_exportar' %}"
+               class="menu-item {% block activo_exportar %}{% endblock %}">
+                📤 Exportar datos
+            </a>
+        </div>
 
         <a href="{% url 'logout' %}" class="logout-btn">
             ⬅ Cerrar sesión

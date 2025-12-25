@@ -1,0 +1,106 @@
+{% extends "packing/control/menu_control_base.html" %}
+
+{% block activo_terminados %}active{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">📦 Pallets Terminados</h2>
+
+<!-- TARJETAS -->
+<div class="row mb-4 text-center">
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm p-3">
+            <h6 class="text-muted">Total terminados</h6>
+            <h3 class="fw-bold">{{ total }}</h3>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm p-3">
+            <h6 class="text-success">Enviados</h6>
+            <h3 class="fw-bold text-success">{{ enviados }}</h3>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm p-3">
+            <h6 class="text-warning">Por enviar</h6>
+            <h3 class="fw-bold text-warning">{{ por_enviar }}</h3>
+        </div>
+    </div>
+</div>
+
+<!-- FILTROS -->
+<form method="GET" class="row g-3 mb-4">
+    <div class="col-md-3">
+        <input type="text" name="buscar" class="form-control"
+               placeholder="Buscar ID o distribuidor"
+               value="{{ request.GET.buscar }}">
+    </div>
+
+    <div class="col-md-3">
+        <select name="variedad" class="form-select">
+            <option value="">Variedad</option>
+            {% for v in variedades %}
+                <option value="{{ v.id }}"
+                    {% if request.GET.variedad == v.id|stringformat:"s" %}selected{% endif %}>
+                    {{ v.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <select name="estado" class="form-select">
+            <option value="">Estado</option>
+            <option value="Enviado">Enviado</option>
+            <option value="Por enviar">Por enviar</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <button class="btn btn-primary w-100">Filtrar</button>
+    </div>
+</form>
+
+<!-- TABLA -->
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle text-center mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Distribuidor</th>
+                    <th>Variedad</th>
+                    <th>Cajas</th>
+                    <th>Calidad</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in pallets %}
+                <tr>
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.distribuidor }}</td>
+                    <td>{{ p.variedad }}</td>
+                    <td>{{ p.cantidad_cajas }}</td>
+                    <td>{{ p.calidad }}</td>
+                    <td>
+                        {% if p.estado == "Enviado" %}
+                            <span class="badge bg-success">Enviado</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Por enviar</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="py-3">No hay pallets terminados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

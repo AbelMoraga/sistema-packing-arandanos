@@ -26,24 +26,37 @@
     margin-bottom: 40px;
   }
 
+  /* CONTENEDOR PRINCIPAL DE BOTONES */
   .button-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 25px;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
   }
 
+  /* FILAS DE DOS BOTONES */
+  .button-row {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Estilo general de botones */
   .menu-btn {
     background-color: #4B3EDB;
     color: white;
     font-weight: 600;
     border: none;
-    padding: 18px 35px;
+    padding: 18px 0;
+    /* se ajusta según ancho fijo */
     border-radius: 12px;
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
-    min-width: 250px;
+    width: 280px;
+    /* TODOS tendrán ESTE ancho EXACTO */
+    text-align: center;
   }
 
   .menu-btn:hover {
@@ -91,24 +104,34 @@
   <h1>❄️ Panel de Recepción / Frío</h1>
 
   <div class="button-container">
-    <!-- Registrar Entrada -->
-    <a href="{% url 'registrar_pallets_entrada' %}">
-      <button class="menu-btn">📦 Registrar Entrada de Pallets</button>
-    </a>
 
-    <!-- Lista de Pallets -->
-    <a href="{% url 'lista_pallets' %}">
-      <button class="menu-btn">🧾 Lista de Pallets Ingresados</button>
-    </a>
+    <!-- FILA 1: Registrar / Lista -->
+    <div class="button-row">
+      <a href="{% url 'registrar_pallets_entrada' %}">
+        <button class="menu-btn">📦 Registrar Entrada de Pallets</button>
+      </a>
 
-    <!-- Pallets para Despachar (próximamente) -->
-    <a href="{% url 'lista_pallets_terminados' %}">
-      <button class="menu-btn">🚚 Pallets Terminados / Despacho</button>
-    </a>
+      <a href="{% url 'lista_pallets' %}">
+        <button class="menu-btn">🧾 Lista de Pallets Ingresados</button>
+      </a>
+    </div>
+
+    <!-- FILA 2: Terminados / IQF -->
+    <div class="button-row">
+      <a href="{% url 'lista_pallets_terminados' %}">
+        <button class="menu-btn">🚚 Pallets para Despachar</button>
+      </a>
+
+      <a href="{% url 'lista_iqf_frio' %}">
+  <button class="menu-btn">🧊 Envío de IQF / Descarte</button>
+</a>
+    </div>
+
   </div>
 
   <a href="{% url 'logout' %}">
     <button class="logout-btn">🚪 Cerrar sesión</button>
   </a>
 </div>
+
 {% endblock %}
