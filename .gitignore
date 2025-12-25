@@ -16,7 +16,10 @@ node_modules/
 build/
 dist/
 .env
-
+# Ejecutables e instaladores
+*.exe
+*.msi
+*.zip
 # Distribution / packaging
 .Python
 build/
